@@ -2,7 +2,7 @@
  * Flexibox
  * Simple lightbox without any complicated stuff around it
  * 
- * @version   0.9 (09.03.2014)
+ * @version   0.9.1 (09.03.2014)
  * @author    Lukas Bestle <lukas@lu-x.me>
  * @copyright Lukas Bestle
  * @link      https://github.com/vis7mac/flexibox
@@ -17,8 +17,7 @@ var Flexibox = function(links, options) {
 	var self = this,
 	    attrName,
 	    stageObj,
-	    titleObj,
-	    imageObj,
+	    stageBackup,
 	    addClass,
 	    removeClass,
 	    addEvent;
@@ -55,9 +54,10 @@ var Flexibox = function(links, options) {
 	
 	// Get required stuff from the DOM
 	stageObj = document.querySelector(this.options.stage);
-	titleObj = stageObj.querySelector(this.options.title);
-	imageObj = stageObj.querySelector(this.options.image);
 	links    = Array.prototype.slice.call(links);
+	
+	// Backup the current stage
+	stageBackup = stageObj.innerHTML;
 	
 	// Expose status stuff
 	window.flexibox = {};
@@ -75,6 +75,8 @@ var Flexibox = function(links, options) {
 	 * @return boolean       Did it work?
 	 */
 	this.open = function(image, title) {
+		var imageObj, titleObj;
+		
 		// Don't open if already open
 		if(window.flexibox.active) {
 			if(this.options.debug) {
@@ -91,6 +93,9 @@ var Flexibox = function(links, options) {
 			return false;
 		}
 		
+		// Restore the stage backup
+		stageObj.innerHTML = stageBackup;
+		
 		// Set status
 		this.active = window.flexibox.active = true;
 		this.data   = {
@@ -99,11 +104,13 @@ var Flexibox = function(links, options) {
 		};
 		
 		// Set image
+		imageObj = stageObj.querySelector(this.options.image);
 		imageObj.src   = image;
 		imageObj.alt   = title;
 		imageObj.title = title;
 		
 		// Set title
+		titleObj = stageObj.querySelector(this.options.title);
 		titleObj.innerHTML = title;
 		
 		// Disable scrolling on body

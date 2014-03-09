@@ -25,7 +25,7 @@ Flexibox is the second library in this series after I released [Flexisel](https:
 ## Flexisel is:
 
 - a simple lightbox framework
-- 797 bytes minified and gzipped (!)
+- 914 bytes minified and gzipped (!)
 - totally flexible, as it doesn't require any other libraries
 
 ## Flexisel is *not*:
