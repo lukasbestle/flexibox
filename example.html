@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Flexibox demo</title>
+		
+		<style>
+			/* UI styles */
+			* {
+				padding: 0;
+				margin: 0;
+				-webkit-box-sizing: border-box;
+				   -moz-box-sizing: border-box;
+				        box-sizing: border-box;
+			}
+			
+			body {
+				font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+				padding: 30px;
+				line-height: 1.3;
+			}
+			
+			h1 {
+				margin-bottom: 20px;
+			}
+			
+			p {
+				margin-bottom: 10px;
+			}
+			
+			ul {
+				margin-left: 30px;
+				margin-bottom: 10px;
+			}
+			
+			/* Lightbox styles
+			   Will work in kind of all modern browsers that support Flexibox at all */
+			.lightboxstage {
+				/* Covers entire page */
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				z-index: 100;
+				
+				/* Hidden by default */
+				opacity: 0;
+			  height: 0;
+			  overflow: hidden;
+				
+				/* Animate the lightbox by adding a fade transition */
+				-webkit-transition: opacity 0.2s ease;
+				   -moz-transition: opacity 0.2s ease;
+				    -ms-transition: opacity 0.2s ease;
+				     -o-transition: opacity 0.2s ease;
+				        transition: opacity 0.2s ease;
+				
+				/* Background of the lightbox is a dark overlay */
+				background: rgba(0, 0, 0, 0.8);
+				color: white;
+			}
+			
+			/* Magical loading text (could also be a spinner in the background etc.)
+			   The magic: It is behind the image and naturally hidden when the image was loaded */
+			.lightboxstage:after {
+				content: 'Loading...';
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				
+				/* Center it horizontally, vertically doesn't really matter */
+				width: 50px;
+				text-align: center;
+				margin-left: -25px;
+			}
+			
+			/* Fade in when shown */
+			.lightboxstage.active {
+				height: auto;
+				opacity: 1;
+			}
+			
+			/* Title */
+			.lightboxstage span {
+				/* Position centered over the image */
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 15px;
+				padding: 0 50px;
+				text-align: center;
+				
+				font-size: 19px;
+			}
+			
+			/* The image */
+			.lightboxstage img {
+				/* Completely centered on the page */
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				-webkit-transform: translate(-50%, -50%);
+				   -moz-transform: translate(-50%, -50%);
+				    -ms-transform: translate(-50%, -50%);
+				     -o-transform: translate(-50%, -50%);
+				        transform: translate(-50%, -50%);
+				
+				/* On top of the loading text */
+				z-index: 100;
+				
+				/* Give the title some room */
+				padding-top: 32px;
+				
+				/* Will automatically expand up to 82% of the page
+				   (experimental choice, seems to look good) */
+				height: auto;
+				width: auto;
+				max-height: 82%;
+				max-width: 82%;
+			}
+			
+			/* Give the image more room when the page is small */
+			@media screen and (max-width: 500px) {
+				.lightboxstage img {
+					max-height: 90%;
+					max-width: 90%;
+					
+					padding-top: 48px;
+				}
+			}
+		</style>
+	</head>
+	
+	<body>
+		<h1>Much doge, very wow!</h1>
+		
+		<p>
+			Here are some cool links to images of doges.
+			They will open in Flexibox as they have the class <code>lightbox</code>.
+		</p>
+		<p>
+			Of course, you can also add thumbs, or whatever you want.<br>
+			Only the <code>href</code> and the <code>title</code> of the link must be correct.
+		<ul>
+			<li><a href="http://www.placedoge.net/800/500" class="lightbox" title="Much amaze">Much amaze</a></li>
+			<li><a href="http://www.placedoge.net/400/800" class="lightbox" title="Very placedoge">Very placedoge</a></li>
+			<li><a href="http://www.placedoge.net/500/500" class="lightbox" title="Wow">Wow</a></li>
+		</ul>
+		
+		<p>
+			These use the custom Flexibox we defined in the script tag.<br>
+			Fading FTW!
+		</p>
+		<ul>
+			<li><a href="http://www.placedoge.net/800/500" class="lightbox--advanced" title="Much amaze">Much amaze</a></li>
+			<li><a href="http://www.placedoge.net/400/800" class="lightbox--advanced" title="Very placedoge">Very placedoge</a></li>
+			<li><a href="http://www.placedoge.net/500/500" class="lightbox--advanced" title="Wow">Wow</a></li>
+		</ul>
+		
+		<!-- For the sake of simplicity, this markup is static.
+		     I highly recommend to put this into the DOM using JS
+		     to avoid having a meaningless container in the markup -->
+		<div class="lightboxstage">
+			<span>This will be the title of the image</span>
+			<img src="#" alt="This will be the title of the image">
+		</div>
+		
+		<script src="flexibox.min.js"></script>
+		<script>
+			/* Initiate Flexibox with default options.
+			   We need to pass the objects of all links we want to be a trigger. */
+			var lightbox = new Flexibox(document.querySelectorAll('.lightbox'), {debug: true});
+			
+			/* That's it, but we can also customize Flexibox
+			     var lightbox = new Flexibox(document.querySelectorAll('.lightbox'), options);
+			   where options is an option object which will be merged with the built-in options (see flexibox.js) */
+			var advancedLightbox = new Flexibox(document.querySelectorAll('.lightbox--advanced'), {
+				// Make sure the stage will fade out correctly: Don't let it disappear using height = 0
+				openCallback: function(image, title, stage) {
+					stage.style.height = 'auto';
+					
+					// Allow the lightbox to open
+					return true;
+				},
+				
+				// You can define if Flexibox shall continue closing the lightbox
+				// Same for opening
+				closeCallback: function(stage, event) {
+					// Validate the event
+					// Useful if you want to add additional close buttons etc.
+					// If there is no close callback, the validation below will be run as well
+					if(event.target !== stage) {
+						alert('Sorry, click the background!');
+						return false;
+					}
+					
+					// Let's do custom hiding here
+					// This will make sure the stage can fade out
+					setTimeout(function() {
+						stage.style.height = null;
+					}, 200);
+					
+					console.log('[Example] Success!')
+					return true;
+				},
+				
+				// Scrolling on body is disabled by default when the lightbox is open
+				// Let's disable that feature so the user can scroll
+				scrolling: false
+			});
+		</script>
+	</body>
+</html>
