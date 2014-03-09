@@ -2,7 +2,7 @@
  * Flexibox
  * Simple lightbox without any complicated stuff around it
  * 
- * @version   0.9.1 (09.03.2014)
+ * @version   0.9.2 (09.03.2014)
  * @author    Lukas Bestle <lukas@lu-x.me>
  * @copyright Lukas Bestle
  * @link      https://github.com/vis7mac/flexibox
@@ -106,7 +106,6 @@ var Flexibox = function(links, options) {
 		// Set image
 		imageObj = stageObj.querySelector(this.options.image);
 		imageObj.src   = image;
-		imageObj.alt   = title;
 		imageObj.title = title;
 		
 		// Set title
