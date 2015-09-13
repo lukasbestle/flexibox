@@ -2,11 +2,10 @@
  * Flexibox
  * Simple lightbox without any complicated stuff around it
  * 
- * @version   0.9.2 (09.03.2014)
- * @author    Lukas Bestle <lukas@lu-x.me>
+ * @author    Lukas Bestle <mail@lukasbestle.com>
  * @copyright Lukas Bestle
- * @link      https://github.com/vis7mac/flexibox
- * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link      https://git.lukasbestle.com/flexijs/flexibox
+ * @license   https://opensource.org/licenses/MIT
  * 
  * @param  object links   A list of all links the user can trigger to open the lightbox
  * @param  object options Object with configuration options overwriting the default ones
